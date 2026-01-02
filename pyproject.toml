@@ -1,0 +1,18 @@
+[tool.pyright]
+# Python 类型检查配置
+include = ["langchain_learning"]
+exclude = ["**/__pycache__", "**/node_modules", "**/venv"]
+
+pythonVersion = "3.13"
+venvPath = "langchain_learning"
+venv = "venv"
+
+typeCheckingMode = "basic"
+
+[tool.pylance]
+# Pylance 配置
+include = ["langchain_learning"]
+exclude = ["**/__pycache__", "**/node_modules", "**/venv"]
+
+
+

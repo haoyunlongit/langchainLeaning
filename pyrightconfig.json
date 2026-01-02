@@ -1,0 +1,35 @@
+{
+  // Python 类型检查配置
+  "include": [
+    "langchain_learning/**/*.py"
+  ],
+  "exclude": [
+    "**/__pycache__",
+    "**/node_modules",
+    "**/venv"
+  ],
+  
+  // Python 版本
+  "pythonVersion": "3.13",
+  
+  // Python 路径 - 指向虚拟环境
+  "venvPath": "${workspaceFolder}/langchain_learning",
+  "venv": "venv",
+  
+  // 类型检查模式
+  "typeCheckingMode": "basic",
+  
+  // 报告级别
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": false,
+  "reportUnusedImport": "warning",
+  "reportUnusedClass": "warning",
+  "reportUnusedFunction": "warning",
+  "reportUnusedVariable": "warning",
+  
+  // 启用源码跳转
+  "stubPath": "${workspaceFolder}/langchain_learning/venv/lib/python3.13/site-packages"
+}
+
+
+
