@@ -37,3 +37,5 @@ python 01_model_io.py
 - **04_output_fixing_parser.py**: 解析失败自动修复（OutputFixingParser）
 - **05_prompt_partials.py**: 使用 `Prompt.partial()` 预绑定格式说明
 - **06_function_calling_tools.py**: 模型工具调用（Function Calling）
+- **07_conversational_tools_memory.py**: 多轮对话 + 工具调用 + 记忆（手动 Loop 闭环）
+- **07_bonus_message_types.py**: 【补充】LangChain 核心消息类型详解
