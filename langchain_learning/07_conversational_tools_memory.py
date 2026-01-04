@@ -1,27 +1,14 @@
 import os
 from datetime import datetime, timezone, timedelta
-from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage, ToolMessage
 from langchain_core.tools import tool
 from langchain_core.chat_history import InMemoryChatMessageHistory
+from utils import get_model
 
-load_dotenv()
-
-def get_model():
-    if os.getenv("DEEPSEEK_API_KEY"):
-        print("🤖 使用 DeepSeek 模型")
-        return ChatOpenAI(
-            model="deepseek-chat",
-            openai_api_key=os.getenv("DEEPSEEK_API_KEY"),
-            openai_api_base=os.getenv("DEEPSEEK_API_BASE"),
-            temperature=0.7
-        )
-    else:
-        print("🤖 使用 OpenAI 模型")
-        return ChatOpenAI(model="gpt-3.5-turbo", temperature=0.7)
-
-model = get_model()
+if os.getenv("DEEPSEEK_API_KEY"):
+    model = get_model("deepseek")
+else:
+    model = get_model("openai")
 
 @tool
 def now_beijing() -> str:

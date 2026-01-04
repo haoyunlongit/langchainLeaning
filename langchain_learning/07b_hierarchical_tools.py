@@ -1,31 +1,18 @@
 import os
-from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langchain_core.tools import tool
 from langchain_core.prompts import ChatPromptTemplate
 from typing import Literal
-
-# 加载环境变量
-load_dotenv()
-
-def get_model():
-    if os.getenv("DEEPSEEK_API_KEY"):
-        print("🤖 使用 DeepSeek 模型")
-        return ChatOpenAI(
-            model="deepseek-chat",
-            openai_api_key=os.getenv("DEEPSEEK_API_KEY"),
-            openai_api_base=os.getenv("DEEPSEEK_API_BASE"),
-            temperature=0.1  # 路由任务需要更低的随机性，越精确越好
-        )
-    else:
-        return ChatOpenAI(model="gpt-3.5-turbo", temperature=0.1)
-
-model = get_model()
+from utils import get_model
 
 # ==========================================
 # 1. 定义两组具体的工具 (Specific Tools)
 # ==========================================
+
+if os.getenv("DEEPSEEK_API_KEY"):
+    model = get_model("deepseek", temperature=0.1)
+else:
+    model = get_model("openai", temperature=0.1)
 
 # --- 数学工具组 ---
 @tool

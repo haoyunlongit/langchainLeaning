@@ -1,11 +1,8 @@
 import os
 from typing import List, Callable
-from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
 from langchain_core.tools import tool
 from langchain_core.messages import HumanMessage, SystemMessage
-
-load_dotenv()
+from utils import get_model
 
 # ==========================================
 # 1. 模拟“工具海” (假设这里有成百上千个工具)
@@ -97,16 +94,9 @@ def run_dynamic_tool_demo(question: str, use_all_tools: bool = False):
     # 2. 绑定阶段：只绑定筛选后的工具 (Context Window 优化)
     # 注意：这里我们动态创建了一个新的 model 实例或绑定
     if os.getenv("DEEPSEEK_API_KEY"):
-        print("🤖 使用 DeepSeek 模型")
-        llm = ChatOpenAI(
-            model="deepseek-chat",
-            openai_api_key=os.getenv("DEEPSEEK_API_KEY"),
-            openai_api_base=os.getenv("DEEPSEEK_API_BASE"),
-            temperature=0.7
-        )
+        llm = get_model("deepseek")
     else:
-        print("🤖 使用 OpenAI 模型")
-        llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.7)
+        llm = get_model("openai")
         
     if tools_to_bind:
         llm_with_tools = llm.bind_tools(tools_to_bind)

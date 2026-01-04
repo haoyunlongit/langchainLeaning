@@ -1,18 +1,11 @@
 import os
-from dotenv import load_dotenv
 from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_community.vectorstores import FAISS
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
-
-# 1. Load Environment Variables
-load_dotenv()
-if not os.getenv("OPENAI_API_KEY"):
-    print("⚠️ Please set OPENAI_API_KEY in .env file")
-    exit(1)
+from utils import get_model, get_embeddings_model
 
 def run_rag_pipeline():
     print("--- 1. Loading Documents ---")
@@ -34,7 +27,7 @@ def run_rag_pipeline():
 
     print("\n--- 3. Indexing (Embedding + VectorStore) ---")
     # Use OpenAI Embeddings to convert text to vectors
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+    embeddings = get_embeddings_model()
     
     # Create VectorStore (FAISS) - This stores vectors in memory (or disk)
     # We use FAISS (Facebook AI Similarity Search) for efficient similarity search
@@ -56,7 +49,10 @@ def run_rag_pipeline():
 
     print("\n--- 5. Generation (RAG Chain) ---")
     # Define the LLM
-    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+    if os.getenv("DEEPSEEK_API_KEY"):
+        llm = get_model("deepseek", temperature=0)
+    else:
+        llm = get_model("openai", temperature=0)
 
     # Define the Prompt Template
     # The 'context' variable will be filled by the retriever

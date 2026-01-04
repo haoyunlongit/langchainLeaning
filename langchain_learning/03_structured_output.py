@@ -1,31 +1,17 @@
 import os
 from typing import List
-from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
 from pydantic import BaseModel, Field
-
-# 加载环境变量
-load_dotenv()
+from utils import get_model
 
 # ==========================================
 # Helper: 获取模型
 # ==========================================
-def get_model():
-    if os.getenv("DEEPSEEK_API_KEY"):
-        print("🤖 使用 DeepSeek 模型")
-        return ChatOpenAI(
-            model="deepseek-chat",
-            openai_api_key=os.getenv("DEEPSEEK_API_KEY"),
-            openai_api_base=os.getenv("DEEPSEEK_API_BASE"),
-            temperature=0.7
-        )
-    else:
-        print("🤖 使用 OpenAI 模型")
-        return ChatOpenAI(model="gpt-3.5-turbo", temperature=0.7)
-
-model = get_model()
+if os.getenv("DEEPSEEK_API_KEY"):
+    model = get_model("deepseek")
+else:
+    model = get_model("openai")
 
 # ==========================================
 # 核心概念：结构化输出 (Structured Output)
